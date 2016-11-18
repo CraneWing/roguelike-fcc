@@ -1,0 +1,55 @@
+header {
+  background-color: #000;
+  color: #fff;
+  font-size: 15px;
+  font-family: monospace;
+  width: 832px;
+  margin: 50px auto 0;
+  height: 110px;
+  visibility: hidden;
+}
+
+header div {
+  display: inline-block;
+}
+
+header div p {
+  margin: 5px 0 0 10px;
+}
+
+#stats {
+  width: 15%;
+}
+
+#weapon-stats {
+  width: 25%;
+}
+
+#weapon-p {
+  margin: 10px 0 0 15px;
+  padding-bottom: 5px;
+}
+
+#message-wrap {
+  width: 35%;
+  float: right;
+  margin-right: 15px;
+}
+
+.msg {
+  padding-top: 10px;
+}
+
+#canvas-wrap {
+  margin: 0 auto;
+  width: 832px;
+}
+
+#bg-canvas,
+#game-canvas {
+  display: block;
+}
+
+#game-canvas {
+  margin: -576px auto 0;
+}
