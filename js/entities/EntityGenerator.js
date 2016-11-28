@@ -4,20 +4,37 @@ function EntityGenerator() {
   this.totalEntities = 0;
   
   this.createBoss = function() {
-    var boss = new Monster(
-      boss.img,
-			boss.x,
-			boss.y,
-		  tileXIndex * display.TILE_SIZE,
-			tileYIndex * display.TILE_SIZE,
-			display.TILE_SIZE,
-			display.TILE_SIZE,
-			'Forest Dragon',
-			'boss',
-			this.totalEntities,
-			70, 40
-    );
-    
+    // if an empty tile is found or not
+    var foundTile = false;
+    // test random tiles until vacant one found
+    while(!foundTile) {
+      var testTile = this.getRandomTile();
+      var t = testTile[0];
+      // check tile if glen or path and not occupied
+      // by player or entities
+    	if ((t.type === 'glen' || t.type === 'path') && 
+		  t.occupied === false && t.entType !== 'player') {
+		    
+		    var tileCol = testTile[1];
+		    var tileRow = testTile[2];
+		    
+		    var boss = new Monster(
+          sprites.boss.img,
+    			sprites.boss.x,
+    			sprites.boss.y,
+    		  tileCol * display.TILE_SIZE,
+    			tileRow * display.TILE_SIZE,
+    			display.TILE_SIZE,
+    			display.TILE_SIZE,
+    			'Forest Dragon',
+    			'boss',
+    			this.totalEntities,
+    			70, 40
+        );
+        
+        break;
+		  }
+    }
   }; // createBoss
   
   this.createFood = function() {
@@ -28,10 +45,10 @@ function EntityGenerator() {
     
     var foodInfo = {
       random: {
-        lev1: { min: 5, max: 7 },
-        lev2: { min: 8, max: 11 }, 
-        lev3: { min: 12, max: 16 },
-        lev4: { min: 15, max: 18 },
+        lev1: { min: 8, max: 11 },
+        lev2: { min: 14, max: 17 }, 
+        lev3: { min: 15, max: 18 },
+        lev4: { min: 18, max: 21 },
       },
       data: {
         f1: {
@@ -91,19 +108,19 @@ function EntityGenerator() {
 			if ((t.type === 'glen' || t.type === 'path') && 
 			  t.occupied === false && t.entType !== 'player') {
 			  
-			  var tileX = testTile[1];
-			  var tileY = testTile[2];
+			  var tileCol = testTile[1];
+			  var tileRow = testTile[2];
   		 
     	  // random food item
     	  var rand = prefix + getRandom(1, totalAvailable).toString();
   	  
     	  // new food object
     	  var foodItem = new Food(
-  				food[rand].img,
-  				food[rand].x,
-  				food[rand].y,
-  				tileX * display.TILE_SIZE,
-  				tileY * display.TILE_SIZE,
+  				sprites.food[rand].img,
+  				sprites.food[rand].x,
+  				sprites.food[rand].y,
+  				tileCol * display.TILE_SIZE,
+  				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
   				display.TILE_SIZE,
   				foodInfo.data[rand].adds_health,
@@ -135,8 +152,8 @@ function EntityGenerator() {
     var monsterInfo = {
       lev1: {
         random: {
-          min_qty: 5,
-          max_qty: 7,
+          min_qty: 6,
+          max_qty: 9,
           total_per_level: 5,
           min_damage: 2,
           max_damage: 5,
@@ -145,7 +162,7 @@ function EntityGenerator() {
         },
         names: {
           m1: 'Humongous Scorpion',
-          m2: 'Killer Bee',
+          m2: 'Killer Hornet',
           m3: 'Cater-Slasher',
           m4: 'Giant Disgusting Slug',
           m5: 'Biggest Mosquito Ever!'
@@ -153,8 +170,8 @@ function EntityGenerator() {
       },
       lev2: {
         random: {
-          min_qty: 7,
-          max_qty: 10,
+          min_qty: 8,
+          max_qty: 12,
           total_per_level: 7,
           min_damage: 7,
           max_damage: 12,
@@ -162,19 +179,19 @@ function EntityGenerator() {
           max_HP: 20
         },
         names: {
-          m1: 'Devil Dog',
-          m2: 'Sneaky Mud Monster',
-          m3: 'Oversized Vampire Bat',
-          m4: 'Tree Troll',
-          m5: 'Slimy Green Ghost',
-          m6: 'Black Widow',
+          m1: 'Diablo Dog',
+          m2: 'Marauder Mud Monster',
+          m3: 'Vicious Vampire Bat',
+          m4: 'Tricky Tree Troll',
+          m5: 'Grimy Green Ghost',
+          m6: 'Belligerent Black Widow',
           m7: 'Poison Shooting Toad'
         }
       },
       lev3: {
         random: {
-          min_qty: 10,
-          max_qty: 16,
+          min_qty: 13,
+          max_qty: 18,
           total_per_level: 6,
           min_damage: 10,
           max_damage: 15,
@@ -192,8 +209,8 @@ function EntityGenerator() {
       },
       lev4: {
         random: {
-          min_qty: 15,
-          max_qty: 20,
+          min_qty: 18,
+          max_qty: 21,
           total_per_level: 6,
           min_damage: 25,
           max_damage: 35,
@@ -229,8 +246,8 @@ function EntityGenerator() {
   	  if ((t.type === 'glen' || t.type === 'path') && 
 			  t.occupied === false && t.entType !== 'player') {
 			  
-			  var tileX = testTile[1];
-			  var tileY = testTile[2];
+			  var tileCol = testTile[1];
+			  var tileRow = testTile[2];
   	  
     	  var rand = prefix + getRandom(1, totalAvailable).toString();
     	  
@@ -245,11 +262,11 @@ function EntityGenerator() {
     	  );
         	  
     	  var monster = new Monster(
-  				monsters[levName][rand].img,
-  				monsters[levName][rand].x,
-  				monsters[levName][rand].y,
-  			  tileX * display.TILE_SIZE,
-  				tileY * display.TILE_SIZE,
+  				sprites.monsters[levName][rand].img,
+  				sprites.monsters[levName][rand].x,
+  				sprites.monsters[levName][rand].y,
+  			  tileCol * display.TILE_SIZE,
+  				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
   				display.TILE_SIZE,
   				monsterInfo[levName].names[rand],
@@ -340,7 +357,7 @@ function EntityGenerator() {
     }; // treasureInfo
     
     var levName = 'lev' + game.level;
-    var total = getRandom(4, 7);
+    var total = getRandom(7, 10);
   	var totalAvailable = treasureInfo.available[levName];
   	var prefix = 't';
   	var count = 0;
@@ -354,8 +371,8 @@ function EntityGenerator() {
   	  if ((t.type === 'glen' || t.type === 'path') && 
 			  t.occupied === false && t.entType !== 'player') {
 			  
-			  var tileX = testTile[1];
-			  var tileY = testTile[2];
+			  var tileCol = testTile[1];
+			  var tileRow = testTile[2];
         var treasureName, owner, rand, name;
   	    // there is a set number of available treasures per
       	// level, with item value increasing on each level. 
@@ -409,11 +426,11 @@ function EntityGenerator() {
     		}
           		
   	  	var treasureItem = new Treasure(
-  				treasure[levName][rand].img,
-  			  treasure[levName][rand].x,
-  				treasure[levName][rand].y,
-  				tileX * display.TILE_SIZE,
-  				tileY * display.TILE_SIZE,
+  				sprites.treasure[levName][rand].img,
+  			  sprites.treasure[levName][rand].x,
+  				sprites.treasure[levName][rand].y,
+  				tileCol * display.TILE_SIZE,
+  				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
   				display.TILE_SIZE,
   			  treasureValue,
@@ -446,7 +463,7 @@ function EntityGenerator() {
         damage: 15
       },
       lev3: {
-        name: ['Super Sword', 'Scimitar'],
+        name: ['MegaSword', 'Scimitar'],
         damage: 25
       },
       lev4: {
@@ -466,8 +483,8 @@ function EntityGenerator() {
   	  if ((t.type === 'glen' || t.type === 'path') && 
 			  t.occupied === false && t.entType !== 'player') {
 			    foundTile = true;
-			    tileX = testTile[1];
-			    tileY = testTile[2];
+			    tileCol = testTile[1];
+			    tileRow = testTile[2];
 			    break;
 			}
     }
@@ -489,11 +506,11 @@ function EntityGenerator() {
     weaponDamage =  weaponInfo[levName].damage;
     
     var weapon = new Weapon(
-			weapons[levName][rand].img,
-			weapons[levName][rand].x,
-			weapons[levName][rand].y,
-			tileX * display.TILE_SIZE,
-			tileY * display.TILE_SIZE,
+			sprites.weapons[levName][rand].img,
+			sprites.weapons[levName][rand].x,
+			sprites.weapons[levName][rand].y,
+			tileCol * display.TILE_SIZE,
+			tileRow * display.TILE_SIZE,
 			display.TILE_SIZE,
 			display.TILE_SIZE,
 			weaponDamage,
@@ -506,11 +523,11 @@ function EntityGenerator() {
   }; // createWeapon
   
   // for drawing the entities to board
-  this.render = function(gameCtx) {
+  this.render = function(entityCtx) {
 		for (var i = 0; i < this.entities.length; i++) {
 			var e = this.entities[i];
 			
-			gameCtx.drawImage(
+			entityCtx.drawImage(
 				e.img,
 				e.x, e.y,
 				display.TILE_SIZE,
@@ -534,11 +551,11 @@ function EntityGenerator() {
 	};
 	
 	this.getRandomTile = function() {
-	  var randX = getRandom(0, board.cols - 1);
-		var randY = getRandom(0, board.rows - 1);
+	  var randCol = getRandom(0, board.cols - 1);
+		var randRow = getRandom(0, board.rows - 1);
 		// shorter tile variable name
-		var tile = board.board[randX][randY];
+		var tile = board.board[randCol][randRow];
 		
-		return [tile, randX, randY];
+		return [tile, randCol, randRow];
 	};
 }

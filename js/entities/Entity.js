@@ -13,10 +13,9 @@ function Entity(img, x, y, drawX, drawY, w, h, type) {
 		// monster amount on level
 		if (this.type === 'monster') {
 			player.totalMonsters--;
-			console.log('removing monster, and ' + player.totalMonsters +
-			  ' are left!');
 		}
 		
+		// remove entity object from entities array
 		var i = entityGen.entities.indexOf(this);
 		entityGen.entities.splice(i, 1);
 	};

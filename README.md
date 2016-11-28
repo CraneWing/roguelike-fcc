@@ -18,8 +18,10 @@ These are the "user stories" this project must fulfill:
 
 * I can move anywhere within the map's boundaries, but I can't move through an enemy until I've beaten it.
 
-* Much of the map is hidden. When I take a step, all spaces that are within a certain number of spaces from me are revealed. (Still in progress in this version.)
+* Much of the map is hidden. When I take a step, all spaces that are within a certain number of spaces from me are revealed. 
 
 * When I beat an enemy, it goes away. I get XP, which eventually increases my level.
 
 * When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based on my level and weapon. The enemy does damage based on its level. Damage is somewhat random within a range.
+
+There are two versions of this game. The "no viewport" branch has a static player sprite and no viewport option, showing the entire board on each level. "Viewport" branch has a fully animated player sprite and a viewport that can be turned on and off.

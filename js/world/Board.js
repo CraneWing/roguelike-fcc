@@ -5,7 +5,7 @@
 function Board() {
 	this.board = []; // 2D array that will hold tile data
 	this.glens = []; // array of glens to add to forest
-	this.numGlens = getRandom(11, 16); // random glen quantity
+	this.numGlens = getRandom(15, 20); // random glen quantity
 	this.MIN_GLEN_SIZE = 2; // min glen width or height
 	this.MAX_GLEN_SIZE = 4; // max glen width or height
 	// board column and row numbers
@@ -14,13 +14,6 @@ function Board() {
   // boolean if board generation done or not
   this.boardReady = false;
 
-  /*console.log('board has ' + this.rows + ' rows and ' +
-  this.cols + ' columns with ' +
-  (this.cols * this.rows) + ' cells. There will be ' + 
-  this.numGlens + ' glens.');
-  console.log('canvas is ' + display.bgCanvas.width + 'px wide and ' +
-   display.bgCanvas.height + 'px high');*/
-  
   // board initially starts as a 2D array filled
   // entirely with tree tiles.
   this.setUpBoard = function() {
@@ -33,9 +26,9 @@ function Board() {
 				// sprite sheet x and y coords on sprite sheet,
 				// coords on canvas and tile type.
 				this.board[i][j] = new Tile(
-					trees[trType].img,
-					trees[trType].x,
-					trees[trType].y,
+					sprites.trees[trType].img,
+					sprites.trees[trType].x,
+					sprites.trees[trType].y,
 					i * display.TILE_SIZE,
 					j * display.TILE_SIZE,
 					'tree'
@@ -51,13 +44,13 @@ function Board() {
 		entityGen.createMonsters();
 		entityGen.createTreasures();
 		entityGen.createWeapon();
+		
+		//console.log(entityGen.entities);
 	
 		// if on level 4, additionally generate a boss
 		if (game.level === 4) {
 			entityGen.createBoss();
 		}
-		
-		console.log(entityGen.entities);
 		
 		// when all board and entity creation done, 
 		// ready to start the game loop.
@@ -95,8 +88,9 @@ function Board() {
 				// tile is calculated, and the player is positioned 
 				// on that tile.
 				if (count === 0) {
-					player.drawX = testGlen.midX * display.TILE_SIZE;
-					player.drawY = testGlen.midY * display.TILE_SIZE;
+					player.boardX = testGlen.midX * display.TILE_SIZE;
+					player.boardY = testGlen.midY * display.TILE_SIZE;
+				 
 					// tile data updated to show it is occupied by player
 					this.board[testGlen.midX][testGlen.midY].occupied = true;
 					this.board[testGlen.midX][testGlen.midY].entType = 'player';
@@ -104,7 +98,7 @@ function Board() {
 				else {
 					var prev = this.glens[count - 1];
 					// with second glen and to the end, testing done with
-					// midpoints of it and previous glen to create vertical
+					// its midpoints and those of previous to create vertical
 					// or horizontal path. 
 					if (getRandom(0, 1) === 1) {
 						this.makeHorizPath(prev.midX, testGlen.midX, prev.midY);
@@ -147,9 +141,9 @@ function Board() {
 		for (var i = Math.min(x1, x2); i <= Math.max(x1, x2) + 1; i++) {
 			var t = this.board[i][y];
 
-			t.img = grass[grType].img;
-			t.x = grass[grType].x;
-			t.y = grass[grType].y;
+			t.img = sprites.grass[grType].img;
+			t.x = sprites.grass[grType].x;
+			t.y = sprites.grass[grType].y;
 			t.type = 'path';
 			t.occupied = false;
 		}
@@ -163,9 +157,9 @@ function Board() {
 		for (var i = Math.min(y1, y2); i <= Math.max(y1, y2) + 1; i++) {
 			var t = this.board[x][i];
 
-			t.img = grass[grType].img;
-			t.x = grass[grType].x;
-			t.y = grass[grType].y;
+			t.img = sprites.grass[grType].img;
+			t.x = sprites.grass[grType].x;
+			t.y = sprites.grass[grType].y;
 			t.type = 'path';
 			t.occupied = false;
 		}

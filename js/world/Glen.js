@@ -12,27 +12,26 @@ function Glen(x, y, w, h) {
 	this.midX = Math.floor((this.topLX + this.bottRX)/2);
 	this.midY = Math.floor((this.topLY + this.bottRY)/2);
 	
-  /*console.log('bottom right corner x ' +
-  this.bottRX + ' and y ' + this.bottRY);*/
-
   // glen collision detection/overlap check
   this.intersects = function(glen) {
-	  return (this.topLX <= glen.bottRX && this.bottRX >= glen.topLX &&
-	  	this.topLY <= glen.bottRY && this.bottRY >= glen.topLY);
+	  return (this.topLX <= this.bottRX && this.bottRX >= this.topLX &&
+	  	this.topLY <= this.bottRY && this.bottRY >= this.topLY);
 	};
 
 	// adds glen to board map and transforms corresponding
 	// tiles to grass
 	this.addGlenToBoard = function() {
+		// select random grass sprite (2 shades of green
+		// available)
 		var grType = 'gr' + getRandom(1, 2).toString();
-
+	  // fill in the glen with the grass tiles
 		for (var x = this.topLX; x < this.bottRX; x++) {
 			for (var y = this.topLY; y < this.bottRY; y++) {
 				var t = board.board[x][y];				
 				
-				t.img = grass[grType].img;
-				t.x = grass[grType].x;
-				t.y = grass[grType].y;
+				t.img = sprites.grass[grType].img;
+				t.x = sprites.grass[grType].x;
+				t.y = sprites.grass[grType].y;
 				t.type = 'glen';
 			}
 		}

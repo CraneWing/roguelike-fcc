@@ -1,18 +1,28 @@
-function Player(sprite) {
-	this.img = sprite.img;
-	this.x = sprite.x; // x coord on sprite sheet
-	this.y = sprite.y; // y coord on sprite sheet
+function Player() {
+	// sprite animations
+	this.idle = sprites.playSprite.idle;
+	this.walkRight = sprites.playSprite.walk_right;
+	this.walkLeft = sprites.playSprite.walk_left;
+	this.walkUp = sprites.playSprite.walk_up;
+	this.walkDown = sprites.playSprite.walk_down;
+	
 	this.h = display.TILE_SIZE; // player height 
 	this.w = display.TILE_SIZE; // player width
-	this.drawX = 0; // canvas x coord 
-	this.drawY = 0; // canvas y coord
-	this.speed = 2; // player movement in pixels
-	this.totalMonsters = 0; // total monsters to defeated on level
+
+	this.boardX = 0; // x coord on board world
+	this.boardY = 0; // y coord on board world
+	this.viewX = 0; // viewport x coord
+	this.viewY = 0; // viewport y coord 
+	this.speed = 3; // player movement in pixels
+	this.animation = null; // directional or idle animation
+
+	this.totalMonsters = 0; // total monsters to defeat on level
 	this.experience = 0; // points earned by defeating monsters
 	this.treasureVal = 0; // total treasure value
 	this.defeated = 0; // total monsters beaten
 	this.health = 100;
 	this.bossDefeated = false;
+	
 	this.alive = true;
 	// player always begins with a stick.
 	this.weapon = {
@@ -20,35 +30,55 @@ function Player(sprite) {
 		damage: 5
 	};
 	
-	this.update = function() {
+	this.update = function(dt) {
+		if (!input.pressed[input.keys.right] &&
+		  !input.pressed[input.keys.left] && 
+		  !input.pressed[input.keys.up] &&
+		  !input.pressed[input.keys.down]) {
+
+			this.animation = new Animate(this.idle, 2);
+		}
+
 		// when arrow key pressed, call motion functions for 
 		// four directions.
-		if (input.pressed[input.keys.right]) this.moveRight();
-		if (input.pressed[input.keys.left]) this.moveLeft();
-		if (input.pressed[input.keys.up]) this.moveUp();
-		if (input.pressed[input.keys.down]) this.moveDown();
-	};
-	
-	this.moveRight = function() {
-		var loc = this.getRowAndCol(this.drawX, this.drawY);
-		var t = board.board[loc[0]][loc[1]];
-		//console.log(loc);
-		//console.log(t.type);
-		
-		var oldX = this.drawX;
-		var oldY = this.drawY;
-		
-		var nextX = this.drawX + this.speed;
-		var nextY = this.drawY;
-		
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-			this.drawX = oldX - this.w/4;
-			this.drawY = oldY;
+		if (input.pressed[input.keys.left]) {
+		  this.moveLeft(dt);
 		}
+
+		if (input.pressed[input.keys.right]) {
+			this.moveRight(dt);
+		}
+
+		if (input.pressed[input.keys.up]) {
+			this.moveUp(dt);
+		} 
+		
+		if (input.pressed[input.keys.down]) {
+			this.moveDown(dt);
+		}
+	}; // update
+	
+	this.moveRight = function(dt) {
+		this.animation = new Animate(this.walkRight, this.speed);
+
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		//console.log(loc);
+		var t = board.board[loc[0]][loc[1]];
+		
+		var oldX = this.boardX;
+		var oldY = this.boardY;
+		
+		var nextX = this.boardX + this.speed;
+		var nextY = this.boardY;
+		
+		// if (t.type === 'tree') {
+		// 	console.log("you're on a tree!");
+		// 	this.boardX = oldX - this.w;
+		// 	this.boardY = oldY;
+		// }
 		  
-		if (this.drawX > display.gameCanvas.width - player.w) {
-			this.drawX = display.gameCanvas.width - player.w;
+		if (this.boardX > display.playerCanvas.width - this.w) {
+			this.boardX = display.playerCanvas.width - this.w;
 		}
 		
 		if ((t.type === 'path' || t.type === 'glen') &&
@@ -67,7 +97,7 @@ function Player(sprite) {
 			// if player didn't get killed by a monster or
 			// didn't starve, they can move on.
 			if (this.health > 0) {
-				this.drawX += this.speed;
+				this.boardX += this.speed;
 			}
 			else {
 				this.alive = false;
@@ -75,32 +105,36 @@ function Player(sprite) {
 			}
 		}
 		else {
-			this.drawX += this.speed;
+			this.boardX += this.speed;
 		}
-	};
+
+		this.animation.update(dt);
+	}; // moveRight
 	
-	this.moveLeft = function() {
-		var loc = this.getRowAndCol(this.drawX, this.drawY);
+	this.moveLeft = function(dt) {
+		this.animation = new Animate(this.walkLeft, this.speed);
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		//console.log(loc);
 		var t = board.board[loc[0]][loc[1]];
 		
-		var oldX = this.drawX + this.w;
-		var oldY = this.drawY;
+		var oldX = this.boardX + this.w;
+		var oldY = this.boardY;
 		
-		var nextX = this.drawX + this.speed;
-		var nextY = this.drawY;
+		var nextX = this.boardX + this.speed;
+		var nextY = this.boardY;
 		
 		// check if player went off left side of canvas
-	  if (this.drawX < 0) {
-			this.drawX = 0;
+	   if (this.boardX < 0) {
+			this.boardX = 0;
 		}
 		// check for tree collision
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-			this.drawX = oldX + this.w/4;
-			this.drawY = oldY;
-		}
-		// check if tile is occupied by monster, treasure,
-		// weapon or food
+		// if (t.type === 'tree') {
+		// 	console.log("you're on a tree!");
+		// 	this.boardX = oldX + this.w/16;
+		// 	this.boardY = oldY;
+		//}
+		// check if tile is occupied by an entity - 
+		// monster, treasure, weapon or food
 		if ((t.type === 'path' || t.type === 'glen') &&
 		  t.occupied === true) {
 			var ent; 
@@ -116,7 +150,7 @@ function Player(sprite) {
 			// if player didn't get killed by a monster or
 			// didn't starve, they can move on.
 			if (this.health > 0) {
-				this.drawX -= this.speed;
+				this.boardX -= this.speed;
 			}
 			else {
 				this.alive = false;
@@ -124,30 +158,34 @@ function Player(sprite) {
 			}
 		}
 		else {
-			this.drawX -= this.speed;
+			this.boardX -= this.speed;
 		}
-	};
+
+		this.animation.update(dt);
+	}; // moveLeft
 	
-	this.moveUp = function() {
-		var loc = this.getRowAndCol(this.drawX, this.drawY);
+	this.moveUp = function(dt) {
+		this.animation = new Animate(this.walkUp, this.speed);
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		//console.log(loc);
 		var t = board.board[loc[0]][loc[1]];
 		
-		var oldX = this.drawX;
-		var oldY = this.drawY;
+		var oldX = this.boardX;
+		var oldY = this.boardY;
 		
-		var nextX = this.drawX + this.speed;
-		var nextY = this.drawY;
+		var nextX = this.boardX + this.speed;
+		var nextY = this.boardY;
 		
-		if (this.drawY < 0) {
-			this.drawY = 0;
+		if (this.boardY < 0) {
+			this.boardY = 0;
 		}
 	
 		// check for tree collision
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-		  this.drawX = oldX;
-			this.drawY = oldY;
-		}
+		// if (t.type === 'tree') {
+		// 	console.log("you're on a tree!");
+		//   this.boardX = oldX;
+		// 	this.boardY = oldY - player.h;
+		// }
 		
 		// check if tile is occupied by monster, treasure,
 		// weapon or food
@@ -164,7 +202,7 @@ function Player(sprite) {
 			// if player didn't get killed by a monster or
 			// didn't starve, they can move on.
 			if (this.health > 0) {
-				this.drawY -= this.speed;
+				this.boardY -= this.speed;
 			}
 			else {
 				this.alive = false;
@@ -172,28 +210,33 @@ function Player(sprite) {
 			}
 		}
 		else {
-			this.drawY -= this.speed;
+			this.boardY -= this.speed;
 		}
-	};
+
+		this.animation.update(dt);
+	}; // moveUp
 	
-	this.moveDown = function() {
-		var loc = this.getRowAndCol(this.drawX, this.drawY);
+	this.moveDown = function(dt) {
+		this.animation = new Animate(this.walkDown, this.speed);
+
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		//console.log(loc);
 		var t = board.board[loc[0]][loc[1]];
 	
-		var oldX = this.drawX;
-		var oldY = this.drawY;
+		var oldX = this.boardX;
+		var oldY = this.boardY;
 		
-		var nextX = this.drawX + this.speed;
-		var nextY = this.drawY;
+		var nextX = this.boardX + this.speed;
+		var nextY = this.boardY;
 
-		if (this.drawY > display.gameCanvas.height - player.h) {
-			this.drawY = display.gameCanvas.height - player.h;
+		if (this.boardY > display.playerCanvas.height - this.h) {
+			this.boardY = display.playerCanvas.height - this.h;
 		}
 		
 		if (t.type === 'tree') {
 			console.log("you're on a tree!");
-			this.drawX = oldX;
-			this.drawY = oldY;
+			this.boardX = oldX;
+			this.boardY = oldY - player.h;
 		}
 		
 		if (t.occupied === true) {
@@ -210,7 +253,7 @@ function Player(sprite) {
 			// if player didn't get killed by a monster or
 			// didn't starve, they can move on.
 			if (this.health > 0) {
-				this.drawY += this.speed;
+				this.boardY += this.speed;
 			}
 			else {
 				this.alive = false;
@@ -218,9 +261,11 @@ function Player(sprite) {
 			}
 		}
 		else {
-			this.drawY += this.speed;
+			this.boardY += this.speed;
 		}
-	};
+
+		this.animation.update(dt);
+	}; // moveDown
 	
 	this.handleEntity = function(ent, tile) {
 		// get the correct entity by matching its
@@ -239,33 +284,16 @@ function Player(sprite) {
 				this.handleTreasure(ent, tile);
 				break;
 			case 'weapon':
-				console.log('type is weapon');
-				console.log(ent);
 				this.handleWeapon(ent, tile);
 				break;
 		}
 	}; // handleEntity
 	
-	this.render = function(gameCtx) {
-		gameCtx.drawImage(
-			playSpr.idle.img,
-			playSpr.idle.x,
-			playSpr.idle.y,
-			display.TILE_SIZE,
-			display.TILE_SIZE,
-			this.drawX, this.drawY,
-			this.w, this.h
-		);
-		// draws box around the player to see his
-		// bounding box.
-		//gameCtx.strokeStyle = '#ff0000';
-		//gameCtx.strokeRect(this.drawX, this.drawY, this.w, this.h);
-	}; // render
-	
 	this.handleFood = function(ent, tile) {
+		// play food pickup sound
+		game.playEntitySound('res/audio/food.mp3');
 		// player health increases
 		this.health += ent.addsHealth;
-		game.playFoodAud();
 		// display health boost message
 		display.showMessage1('Health boost! You found a '
 		  + ent.name + ' worth ' + ent.addsHealth);
@@ -277,37 +305,34 @@ function Player(sprite) {
 		tile.occupied = false;
 		tile.entNum = null;
 		tile.entType = null;
-	};
+	}; // handleFood
 	
 	this.handleWeapon = function(ent, tile) {
-		// if player has found more power weapon than they
-		// currently have, remove current and replace with
-		// new one
+		// play weapon pickup sound
+		game.playEntitySound('res/audio/weapon.mp3');
+		// replace player weapon
 		this.weapon.name = ent.name;
 		this.weapon.damage = ent.damage;
 		ent.removeEntity();
 		
 		tile.occupied = false;
 		tile.entIndex = null;
-		
+		// display message that weapon was picked up
 		display.showMessage1("Weapon Upgrade! It's a " +
 		  this.weapon.name + " (damage " + this.weapon.damage + ")");
 		display.updateWeapon(this.weapon);
-		game.playWeaponAud();
-		
-		
-	};
+	}; // handleWeapon
 	
-	this.handleTreasure = function(ent, tile) {
-		console.log(ent);
-				
-		display.showMessage1('Treasure! ' + ent.name +
-		  ', value: ' + ent.value);
-	  game.playTreasureAud();
+	this.handleTreasure = function(ent, tile) {	
+		// show message treasure picked up and play audio
+		game.playEntitySound('res/audio/treasure.mp3');
 		
+		display.showMessage1('Treasure! ' + ent.name + ', value: ' +
+		  ent.value);
+		// update total treasure score
 		this.treasureVal += ent.value;
 		display.updateTreasure(this.treasureVal);
-		
+		// remove treasure from screen
 		ent.removeEntity();
 		
 		tile.occupied = false;
@@ -316,41 +341,45 @@ function Player(sprite) {
 	}; // handleTreasure
 	
 	this.handleMonster = function(ent, tile) {
+		// check if this monster is level 4 boss
 		if (ent.type === 'boss') {
 			display.showMessage1("It's clobbering time! This guy's the boss!");
 		}
-		
+		// add hit points to monster from player weapon
 	  ent.hitPoints += this.weapon.damage;
+	  // how many more hit points monster can take
 	  var mHP = ent.maxHP - ent.hitPoints;
+	  // player health decreased with each attack on
+	  // the monster
 	  this.health -= ent.damage;
-	  
+	  // show latest health
 	  display.updateHealth(this.health);
 			
 		display.showMessage2(ent.name + ' has taken ' + 
 			this.weapon.damage + ' damage and has ' + 
 		  mHP + ' HP left. You lose ' + ent.damage + ' health');
-			
+		// if monster hit points exceeded, remove it
+		// from the board
 		if (ent.hitPoints >= ent.maxHP) {
+			game.playEntitySound('res/audio/monster.mp3');
 			ent.removeEntity();
 			
 			this.defeated += 1;
-			this.experience += 25;
+			this.experience += 30;
 			
 			tile.occupied = false;
 			tile.entNum = null;
 			tile.entType = null;
-	  	
+	  	// messages vary for monster or boss
 	  	if (ent.type === 'monster') {
 	  		display.showMessage2('');
 		  	display.showMessage1("Huzzah! You've defeated " +
 		  	  ent.name + "!");
-	      game.playMonsterAud();
 	  	}
 		  else if (ent.type === 'boss') {
 		  	display.showMessage1('');
 		  	display.showMessage2('Forsooth, the Boss is Dead!');
 		  	this.bossDefeated = true;
-		  	game.playMonsterAud();
 		  }	
 	  	
 	  	display.updateDefeated(this.defeated);
@@ -376,36 +405,34 @@ function Player(sprite) {
 	  	this.handleLevel();
 	}; // handleMonster
 	
-	// gets column and row number location on board
-	this.getRowAndCol = function(drawX, drawY) {
-		var col = Math.round(drawX/display.TILE_SIZE);
-		var row = Math.round(drawY/display.TILE_SIZE);
-		return [col, row];
-	};
-	
 	this.handleLevel = function() {
-		//console.log('in handle level');
-	  console.log('monster count is ' + this.totalMonsters);
-		console.log('in handleLevel');
+	  //console.log('monster count: ' + this.totalMonsters);
 
-			if (this.totalMonsters === 0) {
-				if (game.level >= 1 && game.level <= 3) {
-					console.log('level 1, 2 or 3 and game not over!');
-					game.states.play = false;
-					game.states.between = true;
-					game.levelReset();
-				  game.drawBetween();
-				}
-				// test if level 4 and all monsters and boss defeated
-				else if (game.level === 4 && this.bossDefeated) {
-				  console.log('level 4 and boss defeated!');	
-					game.level = null;
-					game.states.play = false;
-					game.states.between = false;
-					game.states.game_over = true;
-					game.drawEnd();
-				}
+		if (this.totalMonsters === 0) {
+			if (game.level >= 1 && game.level <= 3) {
+				//console.log('level 1, 2 or 3 and game not over!');
+				window.cancelAnimationFrame(loop);
+				board.board = [];
+				
+				game.states.play = false;
+				game.states.between = true;
+				game.levelReset();
+			  game.handleBetweenLevels();
 			}
+			// test if level 4 and all monsters and boss defeated
+			else if (game.level === 4 && this.bossDefeated) {
+			  //console.log('level 4 and boss defeated!');	
+				game.level = null;
+				game.states.play = false;
+				game.states.between = false;
+				game.states.game_over = true;
+				game.handleBetweenLevels();
+			}
+		}
+	}; // handleLevel
+	
+	this.render = function(viewCtx) {
+		this.animation.render(viewCtx, this.boardX, this.boardY);
 	};
 	
 	this.die = function() {
@@ -415,5 +442,4 @@ function Player(sprite) {
 		display.showMessage1('Sorry, you just died! Play again?');
 		display.showMessage2('Hit enter to start a new game.');
 	};
-	
 }

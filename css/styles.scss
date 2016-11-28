@@ -1,0 +1,80 @@
+header {
+  background-color: #000;
+  color: #fff;
+  font-size: 15px;
+  font-family: monospace;
+  width: 832px;
+  margin: 50px auto 0;
+  height: 130px;
+  visibility: hidden;
+  
+  div {
+    display: inline-block;
+    
+    p {
+      margin: 5px 0 0 5px;
+    }
+  }
+  
+  .btn {
+    margin-top: 6px;
+    border-color: #fff;
+    border-width: 1px;
+    border-style: solid;
+    background: transparent;
+    color: #fff;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 6px 4px;
+    cursor: pointer;
+  }
+  
+  #stats {
+    width: 15%;
+  }
+  
+  #weapon-stats {
+    width: 25%;
+  }
+
+  #weapon p {
+    margin: 10px 0 0 15px;
+    padding-bottom: 5px;
+  }
+  
+  #message-wrap {
+    width: 35%;
+    float: right;
+    margin-right: 15px;
+  }
+  
+  .msg {
+    padding-top: 10px;
+  }
+}
+
+#canvas-wrap {
+  margin: 0 auto;
+  width: 832px;
+  
+  #bg-canvas,
+  #player-canvas,
+  #entity-canvas,
+  #view-canvas,
+  #title-canvas {
+    display: block;
+  }
+  
+  #entity-canvas,
+  #player-canvas,
+  #view-canvas,
+  #title-canvas {
+    margin: -832px auto 0;
+  }
+
+  #view-canvas {
+    box-sizing: border-box;
+  }
+}
+
+

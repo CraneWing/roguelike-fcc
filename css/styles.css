@@ -5,7 +5,7 @@ header {
   font-family: monospace;
   width: 832px;
   margin: 50px auto 0;
-  height: 110px;
+  height: 130px;
   visibility: hidden;
 }
 
@@ -14,7 +14,20 @@ header div {
 }
 
 header div p {
-  margin: 5px 0 0 10px;
+  margin: 5px 0 0 5px;
+}
+
+.btn {
+  margin-top: 6px;
+  border-color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  background: transparent;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 0;
+  padding: 6px 4px;
+  cursor: pointer;
 }
 
 #stats {
@@ -25,7 +38,7 @@ header div p {
   width: 25%;
 }
 
-#weapon-p {
+#weapon p {
   margin: 10px 0 0 15px;
   padding-bottom: 5px;
 }
@@ -46,10 +59,20 @@ header div p {
 }
 
 #bg-canvas,
-#game-canvas {
+#player-canvas,
+#entity-canvas,
+#view-canvas,
+#title-canvas {
   display: block;
 }
 
-#game-canvas {
-  margin: -576px auto 0;
+#entity-canvas,
+#player-canvas,
+#view-canvas,
+#title-canvas {
+  margin: -832px auto 0;
+}
+
+#view-canvas {
+  box-sizing: border-box;
 }

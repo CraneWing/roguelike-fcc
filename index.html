@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <title>Forest of El-Keim</title>
   </head>
   <body>
-    <header id="head">
+    <header>
       <div class="stats">
         <p><strong>LEVEL: </strong><span id="level"></span></p>
         <p><strong>XP: </strong><span id="x-points"></span></p>
@@ -18,6 +19,10 @@
         <p><strong>Weapon: </strong><span id="weapon"></span></p>
       </div>
       <div id="message-wrap">
+        <div id="button wrap">
+          <button id="view-switch" class="btn">Viewport On</button>
+          <button id="sound-switch" class="btn">Sound On</button>
+        </div>
         <div class="msg" id="message1"></div>
         <div class="msg" id="message2"></div>
       </div>
@@ -26,6 +31,8 @@
     <br>
   
     <script src="js/utils.js"></script>
+    <script src="js/world/Viewport.js"></script>
+    <script src="js/graphics/Animate.js"></script>
     <script src="js/input/Input.js"></script>
     <script src="js/world/Board.js"></script>
     <script src="js/display/Display.js"></script>
@@ -38,7 +45,7 @@
     <script src="js/entities/Player.js"></script>
     <script src="js/world/Tile.js"></script>
     <script src="js/world/Glen.js"></script>
-    <script src="js/graphics/Sprite.js"></script>
+    <script src="js/graphics/Sprites.js"></script>
     <script src="js/Game.js"></script>
   </body>
 </html>
