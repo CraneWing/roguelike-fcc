@@ -5,7 +5,7 @@
 function Board() {
 	this.board = []; // 2D array that will hold tile data
 	this.glens = []; // array of glens to add to forest
-	this.numGlens = getRandom(15, 20); // random glen quantity
+	this.numGlens = getRandom(17, 22); // random glen quantity
 	this.MIN_GLEN_SIZE = 2; // min glen width or height
 	this.MAX_GLEN_SIZE = 4; // max glen width or height
 	// board column and row numbers
@@ -45,7 +45,7 @@ function Board() {
 		entityGen.createTreasures();
 		entityGen.createWeapon();
 		
-		//console.log(entityGen.entities);
+		console.log(entityGen.entities);
 	
 		// if on level 4, additionally generate a boss
 		if (game.level === 4) {

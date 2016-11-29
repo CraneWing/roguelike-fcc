@@ -24,4 +24,4 @@ These are the "user stories" this project must fulfill:
 
 * When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based on my level and weapon. The enemy does damage based on its level. Damage is somewhat random within a range.
 
-There are two versions of this game. The "no viewport" branch has a static player sprite and no viewport option, showing the entire board on each level. "Viewport" branch has a fully animated player sprite and a viewport that can be turned on and off.
+There are two versions of this game. The "no viewport" branch has a static player sprite and no viewport option, showing the entire board on each level. "Viewport" branch has a fully animated player sprite and viewport and sound effects that can be turned on and off.

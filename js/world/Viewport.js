@@ -69,14 +69,15 @@ function Viewport() {
 				if (t.occupied === true) {
 					for (var k = 0; k < entityGen.entities.length; k++) {
 						if (entityGen.entities[k].entNum === t.entNum) {
+							var e =	entityGen.entities[k];
+							
 							ctx.drawImage(
-								entityGen.entities[k].img,
-								entityGen.entities[k].x,
-								entityGen.entities[k].y,
+								e.img,
+								e.x, e.y,
 								display.TILE_SIZE,
 								display.TILE_SIZE,
-								entityGen.entities[k].drawX,
-								entityGen.entities[k].drawY,
+								e.drawX,
+								e.drawY,
 								display.TILE_SIZE,
 								display.TILE_SIZE
 							);

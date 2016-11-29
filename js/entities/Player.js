@@ -71,11 +71,14 @@ function Player() {
 		var nextX = this.boardX + this.speed;
 		var nextY = this.boardY;
 		
-		// if (t.type === 'tree') {
-		// 	console.log("you're on a tree!");
-		// 	this.boardX = oldX - this.w;
-		// 	this.boardY = oldY;
-		// }
+		//var test = getRowAndCol(nextX, nextY);
+		//console.log(test.type);
+		
+		if (t.type === 'tree') {
+			console.log("you're on a tree!");
+			this.boardX = oldX - this.w;
+			this.boardY = oldY;
+		}
 		  
 		if (this.boardX > display.playerCanvas.width - this.w) {
 			this.boardX = display.playerCanvas.width - this.w;
@@ -127,12 +130,13 @@ function Player() {
 	   if (this.boardX < 0) {
 			this.boardX = 0;
 		}
-		// check for tree collision
-		// if (t.type === 'tree') {
-		// 	console.log("you're on a tree!");
-		// 	this.boardX = oldX + this.w/16;
-		// 	this.boardY = oldY;
-		//}
+		
+		//check for tree collision
+		if (t.type === 'tree') {
+			console.log("you're on a tree!");
+			this.boardX = oldX + this.w/16;
+			this.boardY = oldY;
+		}
 		// check if tile is occupied by an entity - 
 		// monster, treasure, weapon or food
 		if ((t.type === 'path' || t.type === 'glen') &&
@@ -290,6 +294,7 @@ function Player() {
 	}; // handleEntity
 	
 	this.handleFood = function(ent, tile) {
+		console.log(ent);
 		// play food pickup sound
 		game.playEntitySound('res/audio/food.mp3');
 		// player health increases

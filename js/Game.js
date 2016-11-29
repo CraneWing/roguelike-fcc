@@ -256,7 +256,6 @@ function Game() {
     display.updateDefeated(0);
     display.updateXP(0);
   };
-  
 }
 
 // general game setup and initialization
@@ -305,9 +304,11 @@ function loop() {
   lastTime = now;
   
   update(dt);
+  
   render(
-    display.bgCtx, display.entityCtx,
-    display.playCtx, display.viewCtx
+    display.bgCtx,
+    display.playCtx,
+    display.viewCtx
   );
 
   if (game.states.play) {
@@ -326,13 +327,13 @@ function update(dt) {
 
 // draw everything, clearing canvases
 // before each re-render
-function render(bgCtx, entityCtx, playCtx, viewCtx) {
+function render(bgCtx, playCtx, viewCtx) {
 	display.clearAllCanvases();
 	viewport.render(viewCtx);
 	
 	if (!game.viewportOn) {
 	  board.render(bgCtx);
-	  entityGen.render(entityCtx);
+	  entityGen.render(bgCtx);
 	}
   
   player.render(playCtx);
@@ -409,7 +410,6 @@ $('#view-switch').on('click', function(event) {
   }
   else {
     game.viewportOn = true;
-    console.log('viewport on:' + game.viewportOn);
     $('#view-canvas').show().css('border', '1px solid #000');
     
     $('#bg-canvas').hide().css('border', '0');

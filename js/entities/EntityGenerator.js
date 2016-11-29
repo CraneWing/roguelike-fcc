@@ -523,11 +523,11 @@ function EntityGenerator() {
   }; // createWeapon
   
   // for drawing the entities to board
-  this.render = function(entityCtx) {
+  this.render = function(bgCtx) {
 		for (var i = 0; i < this.entities.length; i++) {
 			var e = this.entities[i];
 			
-			entityCtx.drawImage(
+			bgCtx.drawImage(
 				e.img,
 				e.x, e.y,
 				display.TILE_SIZE,

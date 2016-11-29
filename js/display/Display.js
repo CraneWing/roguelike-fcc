@@ -31,21 +31,13 @@ function Display() {
 	this.viewCanvas.height = this.HEIGHT;
 	this.viewCtx = this.viewCanvas.getContext('2d');
 	
-	// canvas for entities (food, monsters, treasures, weapon)
-	this.entityCanvas = document.createElement('canvas');
-	this.entityCanvas.setAttribute('id', 'entity-canvas');
-	this.entityCanvas.width = this.WIDTH;
-	this.entityCanvas.height = this.HEIGHT;
-	this.entityCtx = this.entityCanvas.getContext('2d');
-	
 	var wrap = document.getElementById('canvas-wrap');
 	
 	wrap.appendChild(this.bgCanvas);
-	wrap.appendChild(this.entityCanvas);
+	//wrap.appendChild(this.entityCanvas);
 	// this canvas hidden if in viewport mode
 	if (game.viewportOn) {
 		$('#bg-canvas').hide();
-		$('#entity-canvas').hide();
 	}
 	
 	wrap.appendChild(this.titleCanvas);
@@ -70,25 +62,11 @@ function Display() {
 			this.titleCanvas.width,
 			this.titleCanvas.height
 		);
-		
-		this.entityCtx.clearRect(
-			0, 0,
-			this.entityCanvas.width,
-			this.entityCanvas.height
-		);
 
 		this.playCtx.clearRect(
 			0, 0,
 			this.playerCanvas.width,
 			this.playerCanvas.height
-		);
-	};
-	
-	this.clearEntities = function() {
-		this.entityCtx.clearRect(
-			0, 0,
-			this.entityCanvas.width,
-			this.entityCanvas.height
 		);
 	};
 

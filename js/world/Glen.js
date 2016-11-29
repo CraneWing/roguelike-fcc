@@ -14,17 +14,16 @@ function Glen(x, y, w, h) {
 	
   // glen collision detection/overlap check
   this.intersects = function(glen) {
-	  return (this.topLX <= this.bottRX && this.bottRX >= this.topLX &&
-	  	this.topLY <= this.bottRY && this.bottRY >= this.topLY);
+	  return (this.topLX <= glen.bottRX && this.bottRX >= glen.topLX &&
+			this.topLY <= glen.bottRY && this.bottRY >= glen.topLY);
 	};
 
-	// adds glen to board map and transforms corresponding
-	// tiles to grass
+	// adds glen to board map and transforms 
+	// corresponding tiles to grass
 	this.addGlenToBoard = function() {
-		// select random grass sprite (2 shades of green
-		// available)
+		// select random grass sprite and fill in the glen
 		var grType = 'gr' + getRandom(1, 2).toString();
-	  // fill in the glen with the grass tiles
+
 		for (var x = this.topLX; x < this.bottRX; x++) {
 			for (var y = this.topLY; y < this.bottRY; y++) {
 				var t = board.board[x][y];				
