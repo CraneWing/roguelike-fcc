@@ -1,7 +1,7 @@
-function Tile(img, x, y, drawX, drawY, type) {
+function Tile(img, sourceX, sourceY, drawX, drawY, type) {
 	this.img = img;
-	this.x = x;
-	this.y = y;
+	this.sourceX = sourceX;
+	this.sourceY = sourceY;
 	this.w = display.TILE_SIZE;
 	this.h = display.TILE_SIZE;
 	this.drawX = drawX;

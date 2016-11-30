@@ -22,7 +22,7 @@ function Animate(sprite, frameSpeed) {
 		ctx.drawImage(
 			this.sprite.img,
 			this.frameSeq[this.currentFrame] * display.TILE_SIZE,
-			this.sprite.y,
+			this.sprite.sourceY,
 			display.TILE_SIZE,
 			display.TILE_SIZE,
 			drawX, drawY, 32, 32

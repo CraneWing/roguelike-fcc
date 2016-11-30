@@ -1,7 +1,9 @@
-function Entity(img, x, y, drawX, drawY, w, h, type) {
+function Entity(img, sourceX, sourceY, drawX,
+  drawY, w, h, type) {
+	
 	this.img = img;
-	this.x = x;
-	this.y = y;
+	this.sourceX = sourceX;
+	this.sourceY = sourceY;
 	this.drawX = drawX;
 	this.drawY = drawY;
 	this.w = w;

@@ -21,7 +21,8 @@ function Glen(x, y, w, h) {
 	// adds glen to board map and transforms 
 	// corresponding tiles to grass
 	this.addGlenToBoard = function() {
-		// select random grass sprite and fill in the glen
+		// randomly select 1 of the 2 grass tiles and use
+		// to fill in the glen
 		var grType = 'gr' + getRandom(1, 2).toString();
 
 		for (var x = this.topLX; x < this.bottRX; x++) {
@@ -29,8 +30,8 @@ function Glen(x, y, w, h) {
 				var t = board.board[x][y];				
 				
 				t.img = sprites.grass[grType].img;
-				t.x = sprites.grass[grType].x;
-				t.y = sprites.grass[grType].y;
+				t.sourceX = sprites.grass[grType].sourceX;
+				t.sourceY = sprites.grass[grType].sourceY;
 				t.type = 'glen';
 			}
 		}

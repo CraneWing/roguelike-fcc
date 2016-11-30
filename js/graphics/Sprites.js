@@ -30,89 +30,89 @@ function Sprites() {
 		this.grass = {
 			gr1: {
 				img: spriteImg,
-				x: 224,
-				y: 0
+				sourceX: 224,
+				sourceY: 0
 		  },
 	    gr2: {
 				img: spriteImg,
-				x: 256,
-				y: 0
+				sourceX: 256,
+				sourceY: 0
 			}
 		};
 	
 		this.trees = {
 			tr1: {
 				img: spriteImg,
-				x: 288,
-				y: 0
+				sourceX: 288,
+				sourceY: 0
 			},
 			tr2: {
 				img: spriteImg,
-				x: 320,
-				y: 0
+				sourceX: 320,
+				sourceY: 0
 			},
 			tr3: {
 				img: spriteImg,
-				x: 352,
-				y: 0
+				sourceX: 352,
+				sourceY: 0
 			},
 			tr4: {
 				img: spriteImg,
-				x: 384,
-				y: 0
+				sourceX: 384,
+				sourceY: 0
 			},
 			tr5: {
 				img: spriteImg,
-				x: 224,
-				y: 32
+				sourceX: 224,
+				sourceY: 32
 			},
 			tr6: {
 				img: spriteImg,
-				x: 256,
-				y: 32
+				sourceX: 256,
+				sourceY: 32
 			},
 			tr7: {
 				img: spriteImg,
-				x: 288,
-				y: 32
+				sourceX: 288,
+				sourceY: 32
 			},
 			tr8: {
 				img: spriteImg,
-				x: 320,
-				y: 32
+				sourceX: 320,
+				sourceY: 32
 			},
 			tr9: {
 				img: spriteImg,
-				x: 352,
-				y: 32
+				sourceX: 352,
+				sourceY: 32
 			}
 		};
 		
 		this.playSprite = {
 			idle: {
 				img: spriteImg,
-				x: 0,
-				y: 192
+				sourceX: 0,
+				sourceY: 192
 			},
 			walk_right: {
 				img: spriteImg,
-				x: 0,
-				y: 352
+				sourceX: 0,
+				sourceY: 352
 			},
 			walk_left: {
 				img: spriteImg,
-				x: 0,
-				y: 288
+				sourceX: 0,
+				sourceY: 288
 			},
 			walk_up: {
 				img: spriteImg,
-				x: 0,
-				y: 256
+				sourceX: 0,
+				sourceY: 256
 			},
 			walk_down: {
 				img: spriteImg,
-				x: 0,
-				y: 320
+				sourceX: 0,
+				sourceY: 320
 			},
 		};
 	
@@ -120,176 +120,176 @@ function Sprites() {
 			lev1: {
 				m1: {
 					img: spriteImg,
-					x: 224,
-					y: 64
+					sourceX: 224,
+					sourceY: 64
 				},
 				m2: {
 					img: spriteImg,
-					x: 256,
-					y: 64
+					sourceX: 256,
+					sourceY: 64
 				},
 				m3: {
 					img: spriteImg,
-					x: 352,
-					y: 160
+					sourceX: 352,
+					sourceY: 160
 				},
 				m4: {
 					img: spriteImg,
-					x: 288,
-					y: 160
+					sourceX: 288,
+					sourceY: 160
 				},
 				m5: {
 					img: spriteImg,
-					x: 320,
-					y: 192
+					sourceX: 320,
+					sourceY: 192
 				}
 			},
 			lev2: {
 				m1: {
 					img: spriteImg,
-					x: 352,
-					y: 64
+					sourceX: 352,
+					sourceY: 64
 				},
 				m2: {
 					img: spriteImg,
-					x: 256,
-					y: 96
+					sourceX: 256,
+					sourceY: 96
 				},
 				m3: {
 					img: spriteImg,
-					x: 288,
-					y: 96
+					sourceX: 288,
+					sourceY: 96
 				},
 				m4: {
 					img: spriteImg,
-					x: 256,
-					y: 128
+					sourceX: 256,
+					sourceY: 128
 				},
 				m5: {
 					img: spriteImg,
-					x: 384,
-					y: 128
+					sourceX: 384,
+					sourceY: 128
 				},
 				m6: {
 					img: spriteImg,
-					x: 320,
-					y: 64
+					sourceX: 320,
+					sourceY: 64
 				},
 				m7: {
 					img: spriteImg,
-					x: 384,
-					y: 160
+					sourceX: 384,
+					sourceY: 160
 				}
 			},
 			lev3: {
 				m1: {
 					img: spriteImg,
-					x: 288,
-					y: 192
+					sourceX: 288,
+					sourceY: 192
 				},
 				m2: {
 					img: spriteImg,
-					x: 288,
-					y: 128
+					sourceX: 288,
+					sourceY: 128
 				},
 				m3: {
 					img: spriteImg,
-					x: 384,
-					y: 96
+					sourceX: 384,
+					sourceY: 96
 				},
 				m4: {
 					img: spriteImg,
-					x: 352,
-					y: 96
+					sourceX: 352,
+					sourceY: 96
 				},
 				m5: {
 					img: spriteImg,
-					x: 320,
-					y: 128
+					sourceX: 320,
+					sourceY: 128
 				},
 				m6: {
 					img: spriteImg,
-					x: 352,
-					y: 128
+					sourceX: 352,
+					sourceY: 128
 				}
 			},
 			lev4: {
 				m1: {
 					img: spriteImg,
-					x: 256,
-					y: 160
+					sourceX: 256,
+					sourceY: 160
 				},
 				m2: {
 					img: spriteImg,
-					x: 224,
-					y: 96
+					sourceX: 224,
+					sourceY: 96
 				},
 				m3: {
 					img: spriteImg,
-					x: 320,
-					y: 160
+					sourceX: 320,
+					sourceY: 160
 				},
 				m4: {
 					img: spriteImg,
-					x: 320,
-					y: 96
+					sourceX: 320,
+					sourceY: 96
 				},
 				m5: {
 					img: spriteImg,
-					x: 256,
-					y: 192
+					sourceX: 256,
+					sourceY: 192
 				},
 				m6: {
 					img: spriteImg,
-					x: 288,
-					y: 64
+					sourceX: 288,
+					sourceY: 64
 				}
 			}
 		};
 		
 		this.boss = {
 			img: spriteImg, 
-			x: 384,
-			y: 64
+			sourceX: 384,
+			sourceY: 64
 		};	
 	
 		this.weapons = {
 		  lev1: {
 					w1: {
 					img: spriteImg,
-					x: 352,
-					y: 192
+					sourceX: 352,
+					sourceY: 192
 				}
 			},
 			lev2: {
 				w1: {
 					img: spriteImg,
-					x: 256,
-					y: 224
+					sourceX: 256,
+					sourceY: 224
 				},
 				w2: {
 					img: spriteImg,
-					x: 384,
-					y: 192
+					sourceX: 384,
+					sourceY: 192
 				},
 			},
 			lev3: {
 				w1: {
 					img: spriteImg,
-					x: 384,
-					y: 192
+					sourceX: 384,
+					sourceY: 192
 				},
 				w2: {
 					img: spriteImg,
-					x: 352,
-					y: 224
+					sourceX: 352,
+					sourceY: 224
 				}
 			},
 			lev4: {
 				w1: {
 					img: spriteImg,
-					x: 320,
-					y: 224
+					sourceX: 320,
+					sourceY: 224
 				}
 			}
 		};
@@ -297,48 +297,48 @@ function Sprites() {
 		this.food = {
 			f1: {
 				img: spriteImg,
-				x: 288,
-				y: 256
+				sourceX: 288,
+				sourceY: 256
 			},
 			f2: {
 				img: spriteImg,
-				x: 320,
-				y: 256
+				sourceX: 320,
+				sourceY: 256
 			},
 			f3: {
 				img: spriteImg,
-				x: 352,
-				y: 256
+				sourceX: 352,
+				sourceY: 256
 			},
 			f4: {
 				img: spriteImg,
-				x: 384,
-				y: 256
+				sourceX: 384,
+				sourceY: 256
 			},
 			f5: {
 				img: spriteImg,
-				x: 384,
-				y: 288
+				sourceX: 384,
+				sourceY: 288
 			},
 			f6: {
 				img: spriteImg,
-				x: 288,
-				y: 320
+				sourceX: 288,
+				sourceY: 320
 			},
 			f7: {
 				img: spriteImg,
-				x: 288,
-				y: 288
+				sourceX: 288,
+				sourceY: 288
 			},
 			f8: {
 				img: spriteImg,
-				x: 352,
-				y: 288
+				sourceX: 352,
+				sourceY: 288
 			},
 			f9: {
 				img: spriteImg,
-				x: 320,
-				y: 288
+				sourceX: 320,
+				sourceY: 288
 			}
 		};
 		
@@ -346,54 +346,54 @@ function Sprites() {
 			lev1: {
 				t1: {
 					img: spriteImg,
-					x: 320,
-					y: 320
+					sourceX: 320,
+					sourceY: 320
 				},
 				t2: {
 					img: spriteImg,
-					x: 352,
-					y: 320
+					sourceX: 352,
+					sourceY: 320
 				},
 				t3: {
 					img: spriteImg,
-					x: 384,
-					y: 320
+					sourceX: 384,
+					sourceY: 320
 				},
 			},
 			lev2: {
 				t1: {
 					img: spriteImg,
-					x: 288,
-					y: 352
+					sourceX: 288,
+					sourceY: 352
 				},
 				t2: {
 					img: spriteImg,
-					x: 320,
-					y: 352
+					sourceX: 320,
+					sourceY: 352
 				},
 			},
 			lev3: {
 				t1: {
 					img: spriteImg,
-					x: 352,
-					y: 352
+					sourceX: 352,
+					sourceY: 352
 				},
 				t2: {
 					img: spriteImg,
-					x: 384,
-					y: 352
+					sourceX: 384,
+					sourceY: 352
 				}
 			},
 			lev4: {
 				t1: {
 					img: spriteImg,
-					x: 192,
-					y: 384
+					sourceX: 192,
+					sourceY: 384
 				},
 				t2: {
 					img: spriteImg,
-					x: 224,
-					y: 384
+					sourceX: 224,
+					sourceY: 384
 				}
 			}
 		};

@@ -55,7 +55,7 @@ function Viewport() {
 				
 				ctx.drawImage(
 					t.img,
-					t.x, t.y,
+					t.sourceX, t.sourceY,
 					display.TILE_SIZE,
 					display.TILE_SIZE,
 					t.drawX, t.drawY,
@@ -73,7 +73,7 @@ function Viewport() {
 							
 							ctx.drawImage(
 								e.img,
-								e.x, e.y,
+								e.sourceX, e.sourceY,
 								display.TILE_SIZE,
 								display.TILE_SIZE,
 								e.drawX,

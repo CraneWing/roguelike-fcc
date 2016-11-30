@@ -27,8 +27,8 @@ function Board() {
 				// coords on canvas and tile type.
 				this.board[i][j] = new Tile(
 					sprites.trees[trType].img,
-					sprites.trees[trType].x,
-					sprites.trees[trType].y,
+					sprites.trees[trType].sourceX,
+					sprites.trees[trType].sourceY,
 					i * display.TILE_SIZE,
 					j * display.TILE_SIZE,
 					'tree'
@@ -45,7 +45,7 @@ function Board() {
 		entityGen.createTreasures();
 		entityGen.createWeapon();
 		
-		console.log(entityGen.entities);
+		//console.log(entityGen.entities);
 	
 		// if on level 4, additionally generate a boss
 		if (game.level === 4) {
@@ -142,8 +142,8 @@ function Board() {
 			var t = this.board[i][y];
 
 			t.img = sprites.grass[grType].img;
-			t.x = sprites.grass[grType].x;
-			t.y = sprites.grass[grType].y;
+			t.sourceX = sprites.grass[grType].sourceX;
+			t.sourceY = sprites.grass[grType].sourceY;
 			t.type = 'path';
 			t.occupied = false;
 		}
@@ -158,8 +158,8 @@ function Board() {
 			var t = this.board[x][i];
 
 			t.img = sprites.grass[grType].img;
-			t.x = sprites.grass[grType].x;
-			t.y = sprites.grass[grType].y;
+			t.sourceX = sprites.grass[grType].sourceX;
+			t.sourceY = sprites.grass[grType].sourceY;
 			t.type = 'path';
 			t.occupied = false;
 		}
@@ -175,7 +175,7 @@ function Board() {
 	
 				bgCtx.drawImage(
 					t.img,
-					t.x, t.y,
+					t.sourceX, t.sourceY,
 					display.TILE_SIZE,
 					display.TILE_SIZE,
 					t.drawX, t.drawY,

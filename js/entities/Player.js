@@ -11,9 +11,7 @@ function Player() {
 
 	this.boardX = 0; // x coord on board world
 	this.boardY = 0; // y coord on board world
-	this.viewX = 0; // viewport x coord
-	this.viewY = 0; // viewport y coord 
-	this.speed = 3; // player movement in pixels
+	this.speed = 2; // player movement in pixels
 	this.animation = null; // directional or idle animation
 
 	this.totalMonsters = 0; // total monsters to defeat on level
@@ -58,85 +56,92 @@ function Player() {
 		}
 	}; // update
 	
+	// movement handlers for the four directions are all
+	// very similar. they check for (1) if player about to
+	// go off the canvas; (2) type of tile player will
+	// walk onto next; and (3) and if tile is glen or 
+	// path type, if it is occupied by entity or is empty.
+	
 	this.moveRight = function(dt) {
+		// set a new animation loop
 		this.animation = new Animate(this.walkRight, this.speed);
-
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		//console.log(loc);
-		var t = board.board[loc[0]][loc[1]];
 		
-		var oldX = this.boardX;
-		var oldY = this.boardY;
-		
-		var nextX = this.boardX + this.speed;
-		var nextY = this.boardY;
-		
-		//var test = getRowAndCol(nextX, nextY);
-		//console.log(test.type);
-		
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-			this.boardX = oldX - this.w;
-			this.boardY = oldY;
-		}
-		  
+		// check if player reached right canvas edge  
 		if (this.boardX > display.playerCanvas.width - this.w) {
 			this.boardX = display.playerCanvas.width - this.w;
 		}
 		
+		// tile col and row indexes of current location
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		// current tile
+		var t = board.board[loc[0]][loc[1]];
+		// collision detection
+		// get next x and y coords
+		var nextX = this.boardX + this.speed;
+		var nextY = this.boardY;
+		// get next tile to check for type
+		var nextTileCoords = getRowAndCol(nextX, nextY);
+		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
+		// keep player from going on a tree tile
+		if (nextTile.type === 'tree') {
+			this.boardX = t.drawX;
+		}
+	
+		// if regular path or glen tile, check if an entity is 
+		// on it
 		if ((t.type === 'path' || t.type === 'glen') &&
 		  t.occupied === true) {
 			
-			var ent; 
-	    
+	    // occupied tile has entity number property used
+	    // to get its entity from entities array.
 	    for (var i = 0; i < entityGen.entities.length; i++) {
 		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		ent = entityGen.entities[i];
+		  		var ent = entityGen.entities[i];
 		  		break;
 		    }
 	    }
-	    
+	    // pass entity to this function, which calls one
+	    // of four entity handlers based on type
 			this.handleEntity(ent, t);
-			// if player didn't get killed by a monster or
-			// didn't starve, they can move on.
+			// if player is okay having addressing the entity, 
+			// they can continue moving right
 			if (this.health > 0) {
 				this.boardX += this.speed;
 			}
-			else {
+			else { // or else it's game over for them
 				this.alive = false;
 				this.die();
 			}
 		}
-		else {
+		else { 
+			// glen or path tile is empty, so can keep
+			// moving right
 			this.boardX += this.speed;
 		}
-
+		// updates sprite movement in animation loop
 		this.animation.update(dt);
 	}; // moveRight
 	
 	this.moveLeft = function(dt) {
 		this.animation = new Animate(this.walkLeft, this.speed);
+		
+		// check if player went off left side of canvas
+	  if (this.boardX < 0) this.boardX = 0;
+		
 		var loc = getRowAndCol(this.boardX, this.boardY);
-		//console.log(loc);
 		var t = board.board[loc[0]][loc[1]];
-		
-		var oldX = this.boardX + this.w;
-		var oldY = this.boardY;
-		
+		// test player's next position
 		var nextX = this.boardX + this.speed;
 		var nextY = this.boardY;
 		
-		// check if player went off left side of canvas
-	   if (this.boardX < 0) {
-			this.boardX = 0;
+		var nextTileCoords = getRowAndCol(nextX, nextY);
+		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
+	
+		// keep player from going onto a tree tile
+		if (nextTile.type === 'tree') {
+			this.boardX = nextTile.drawX + 32;
 		}
-		
-		//check for tree collision
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-			this.boardX = oldX + this.w/16;
-			this.boardY = oldY;
-		}
+	
 		// check if tile is occupied by an entity - 
 		// monster, treasure, weapon or food
 		if ((t.type === 'path' || t.type === 'glen') &&
@@ -145,14 +150,13 @@ function Player() {
 	    
 	    for (var i = 0; i < entityGen.entities.length; i++) {
 		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		ent = entityGen.entities[i];
+		  		var ent = entityGen.entities[i];
 		  		break;
 		    }
 	    }
 	    
 			this.handleEntity(ent, t);
-			// if player didn't get killed by a monster or
-			// didn't starve, they can move on.
+			
 			if (this.health > 0) {
 				this.boardX -= this.speed;
 			}
@@ -170,34 +174,29 @@ function Player() {
 	
 	this.moveUp = function(dt) {
 		this.animation = new Animate(this.walkUp, this.speed);
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		//console.log(loc);
-		var t = board.board[loc[0]][loc[1]];
+		// check if player went off top of canvas
+		if (this.boardY < 0) {
+			this.boardY = 0;
+		}
 		
-		var oldX = this.boardX;
-		var oldY = this.boardY;
+		var loc = getRowAndCol(this.boardX, this.boardY);
+		var t = board.board[loc[0]][loc[1]];
 		
 		var nextX = this.boardX + this.speed;
 		var nextY = this.boardY;
 		
-		if (this.boardY < 0) {
-			this.boardY = 0;
-		}
+		var nextTileCoords = getRowAndCol(nextX, nextY);
+		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
 	
-		// check for tree collision
-		// if (t.type === 'tree') {
-		// 	console.log("you're on a tree!");
-		//   this.boardX = oldX;
-		// 	this.boardY = oldY - player.h;
-		// }
+		// keep player from going onto a tree tile
+		if (nextTile.type === 'tree') {
+			this.boardY = t.drawY + 32;
+		}
 		
-		// check if tile is occupied by monster, treasure,
-		// weapon or food
-		if (t.occupied === true) {
-			var ent; 
+		 if (t.occupied === true) {
 	    for (var i = 0; i < entityGen.entities.length; i++) {
 		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		ent = entityGen.entities[i];
+		  		var ent = entityGen.entities[i];
 		  		break;
 		    }
 	    }
@@ -212,8 +211,8 @@ function Player() {
 				this.alive = false;
 				this.die();
 			}
-		}
-		else {
+	  }
+	  else {
 			this.boardY -= this.speed;
 		}
 
@@ -222,38 +221,35 @@ function Player() {
 	
 	this.moveDown = function(dt) {
 		this.animation = new Animate(this.walkDown, this.speed);
+		// check if player went off bottom of canvas
+		if (this.boardY > display.playerCanvas.height - this.h) {
+			this.boardY = display.playerCanvas.height - this.h;
+		}
 
 		var loc = getRowAndCol(this.boardX, this.boardY);
 		//console.log(loc);
 		var t = board.board[loc[0]][loc[1]];
-	
-		var oldX = this.boardX;
-		var oldY = this.boardY;
 		
 		var nextX = this.boardX + this.speed;
 		var nextY = this.boardY;
-
-		if (this.boardY > display.playerCanvas.height - this.h) {
-			this.boardY = display.playerCanvas.height - this.h;
-		}
 		
-		if (t.type === 'tree') {
-			console.log("you're on a tree!");
-			this.boardX = oldX;
-			this.boardY = oldY - player.h;
+		var nextTileCoords = getRowAndCol(nextX, nextY);
+		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
+	
+		// keep player from going onto a tree tile
+		if (nextTile.type === 'tree') {
+			this.boardY = t.drawY - 32;
 		}
 		
 		if (t.occupied === true) {
-			var ent; 
-	    
 	    for (var i = 0; i < entityGen.entities.length; i++) {
 		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		ent = entityGen.entities[i];
+		  		var ent = entityGen.entities[i];
 		  		break;
 		    }
 	    }
 	    
-		this.handleEntity(ent, t);
+	 	 this.handleEntity(ent, t);
 			// if player didn't get killed by a monster or
 			// didn't starve, they can move on.
 			if (this.health > 0) {
@@ -294,7 +290,6 @@ function Player() {
 	}; // handleEntity
 	
 	this.handleFood = function(ent, tile) {
-		console.log(ent);
 		// play food pickup sound
 		game.playEntitySound('res/audio/food.mp3');
 		// player health increases

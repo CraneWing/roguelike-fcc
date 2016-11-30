@@ -20,8 +20,8 @@ function EntityGenerator() {
 		    
 		    var boss = new Monster(
           sprites.boss.img,
-    			sprites.boss.x,
-    			sprites.boss.y,
+    			sprites.boss.sourceX,
+    			sprites.boss.sourceY,
     		  tileCol * display.TILE_SIZE,
     			tileRow * display.TILE_SIZE,
     			display.TILE_SIZE,
@@ -117,8 +117,8 @@ function EntityGenerator() {
     	  // new food object
     	  var foodItem = new Food(
   				sprites.food[rand].img,
-  				sprites.food[rand].x,
-  				sprites.food[rand].y,
+  				sprites.food[rand].sourceX,
+  				sprites.food[rand].sourceY,
   				tileCol * display.TILE_SIZE,
   				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
@@ -263,8 +263,8 @@ function EntityGenerator() {
         	  
     	  var monster = new Monster(
   				sprites.monsters[levName][rand].img,
-  				sprites.monsters[levName][rand].x,
-  				sprites.monsters[levName][rand].y,
+  				sprites.monsters[levName][rand].sourceX,
+  				sprites.monsters[levName][rand].sourceY,
   			  tileCol * display.TILE_SIZE,
   				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
@@ -427,8 +427,8 @@ function EntityGenerator() {
           		
   	  	var treasureItem = new Treasure(
   				sprites.treasure[levName][rand].img,
-  			  sprites.treasure[levName][rand].x,
-  				sprites.treasure[levName][rand].y,
+  			  sprites.treasure[levName][rand].sourceX,
+  				sprites.treasure[levName][rand].sourceY,
   				tileCol * display.TILE_SIZE,
   				tileRow * display.TILE_SIZE,
   				display.TILE_SIZE,
@@ -507,8 +507,8 @@ function EntityGenerator() {
     
     var weapon = new Weapon(
 			sprites.weapons[levName][rand].img,
-			sprites.weapons[levName][rand].x,
-			sprites.weapons[levName][rand].y,
+			sprites.weapons[levName][rand].sourceX,
+			sprites.weapons[levName][rand].sourceY,
 			tileCol * display.TILE_SIZE,
 			tileRow * display.TILE_SIZE,
 			display.TILE_SIZE,
@@ -529,7 +529,7 @@ function EntityGenerator() {
 			
 			bgCtx.drawImage(
 				e.img,
-				e.x, e.y,
+				e.sourceX, e.sourceY,
 				display.TILE_SIZE,
 				display.TILE_SIZE,
 				e.drawX, e.drawY,
