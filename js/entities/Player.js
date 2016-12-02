@@ -11,7 +11,7 @@ function Player() {
 
 	this.boardX = 0; // x coord on board world
 	this.boardY = 0; // y coord on board world
-	this.speed = 2; // player movement in pixels
+	this.speed = 2; 
 	this.animation = null; // directional or idle animation
 
 	this.totalMonsters = 0; // total monsters to defeat on level
@@ -29,6 +29,7 @@ function Player() {
 	};
 	
 	this.update = function(dt) {
+		// if no arrow key input, use standing still animation
 		if (!input.pressed[input.keys.right] &&
 		  !input.pressed[input.keys.left] && 
 		  !input.pressed[input.keys.up] &&
@@ -38,182 +39,77 @@ function Player() {
 		}
 
 		// when arrow key pressed, call motion functions for 
-		// four directions.
-		if (input.pressed[input.keys.left]) {
-		  this.moveLeft(dt);
-		}
+		// four directions 
+		if (input.pressed[input.keys.left]) this.moveLeft(dt);
 
-		if (input.pressed[input.keys.right]) {
-			this.moveRight(dt);
-		}
+		if (input.pressed[input.keys.right]) this.moveRight(dt);
 
-		if (input.pressed[input.keys.up]) {
-			this.moveUp(dt);
-		} 
+		if (input.pressed[input.keys.up]) this.moveUp(dt);
 		
-		if (input.pressed[input.keys.down]) {
-			this.moveDown(dt);
-		}
+		if (input.pressed[input.keys.down]) this.moveDown(dt);
+		
 	}; // update
 	
 	// movement handlers for the four directions are all
 	// very similar. they check for (1) if player about to
-	// go off the canvas; (2) type of tile player will
-	// walk onto next; and (3) and if tile is glen or 
-	// path type, if it is occupied by entity or is empty.
-	
-	this.moveRight = function(dt) {
-		// set a new animation loop
-		this.animation = new Animate(this.walkRight, this.speed);
-		
-		// check if player reached right canvas edge  
-		if (this.boardX > display.playerCanvas.width - this.w) {
-			this.boardX = display.playerCanvas.width - this.w;
-		}
-		
-		// tile col and row indexes of current location
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		// current tile
-		var t = board.board[loc[0]][loc[1]];
-		// collision detection
-		// get next x and y coords
-		var nextX = this.boardX + this.speed;
-		var nextY = this.boardY;
-		// get next tile to check for type
-		var nextTileCoords = getRowAndCol(nextX, nextY);
-		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
-		// keep player from going on a tree tile
-		if (nextTile.type === 'tree') {
-			this.boardX = t.drawX;
-		}
-	
-		// if regular path or glen tile, check if an entity is 
-		// on it
-		if ((t.type === 'path' || t.type === 'glen') &&
-		  t.occupied === true) {
-			
-	    // occupied tile has entity number property used
-	    // to get its entity from entities array.
-	    for (var i = 0; i < entityGen.entities.length; i++) {
-		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		var ent = entityGen.entities[i];
-		  		break;
-		    }
-	    }
-	    // pass entity to this function, which calls one
-	    // of four entity handlers based on type
-			this.handleEntity(ent, t);
-			// if player is okay having addressing the entity, 
-			// they can continue moving right
-			if (this.health > 0) {
-				this.boardX += this.speed;
-			}
-			else { // or else it's game over for them
-				this.alive = false;
-				this.die();
-			}
-		}
-		else { 
-			// glen or path tile is empty, so can keep
-			// moving right
-			this.boardX += this.speed;
-		}
-		// updates sprite movement in animation loop
-		this.animation.update(dt);
-	}; // moveRight
+	// go off the canvas and (2) if player to walk onto glen or
+	// path tile, or must stop because it is a tree tile.
 	
 	this.moveLeft = function(dt) {
+		// create directional animation
 		this.animation = new Animate(this.walkLeft, this.speed);
-		
-		// check if player went off left side of canvas
-	  if (this.boardX < 0) this.boardX = 0;
-		
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		var t = board.board[loc[0]][loc[1]];
-		// test player's next position
-		var nextX = this.boardX + this.speed;
-		var nextY = this.boardY;
-		
-		var nextTileCoords = getRowAndCol(nextX, nextY);
-		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
-	
-		// keep player from going onto a tree tile
-		if (nextTile.type === 'tree') {
-			this.boardX = nextTile.drawX + 32;
-		}
-	
-		// check if tile is occupied by an entity - 
-		// monster, treasure, weapon or food
-		if ((t.type === 'path' || t.type === 'glen') &&
-		  t.occupied === true) {
-			var ent; 
-	    
-	    for (var i = 0; i < entityGen.entities.length; i++) {
-		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		var ent = entityGen.entities[i];
-		  		break;
-		    }
-	    }
-	    
-			this.handleEntity(ent, t);
-			
-			if (this.health > 0) {
-				this.boardX -= this.speed;
-			}
-			else {
-				this.alive = false;
-				this.die();
-			}
-		}
-		else {
-			this.boardX -= this.speed;
+		// keep player from moving off left side of board
+		if (this.boardX < 0) {
+		 	this.boardX = 0;
 		}
 
+		if (getTileOrIndexes(this.boardX - 8, this.boardY, 'tile').type !== 'tree') {
+			this.boardX -= this.speed;
+			// check if tile player walked on has entity on it
+			if (getTileOrIndexes(this.boardX - 8, this.boardY, 'tile').occupied) {
+				// tile passed to entity handler because one of its
+				// properties is an entity number used to get correct 
+				// entity from entities array. tile properties also change 
+				// when passed to each of four handlers based on entity type.
+				this.handleEntity(getTileOrIndexes(this.boardX - 8, this.boardY, 'tile'));
+	    }
+		}
+
+		// updates animation movement
 		this.animation.update(dt);
 	}; // moveLeft
 	
+	this.moveRight = function(dt) {
+		this.animation = new Animate(this.walkRight, this.speed);
+		
+		if (this.boardX > display.playerCanvas.width - this.w) {
+		 	this.boardX = display.playerCanvas.width - this.w;
+		}
+
+		if (getTileOrIndexes(this.boardX + 8, this.boardY, 'tile').type !== 'tree') {
+			this.boardX += this.speed;
+
+			if (getTileOrIndexes(this.boardX + 8, this.boardY, 'tile').occupied) {
+				this.handleEntity(getTileOrIndexes(this.boardX + 8, this.boardY, 'tile'));
+	    }
+		}
+	
+		this.animation.update(dt);
+	}; // moveRight
+	
 	this.moveUp = function(dt) {
 		this.animation = new Animate(this.walkUp, this.speed);
-		// check if player went off top of canvas
-		if (this.boardY < 0) {
+		
+		if (this.boardY - this.h < 0) {
 			this.boardY = 0;
 		}
-		
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		var t = board.board[loc[0]][loc[1]];
-		
-		var nextX = this.boardX + this.speed;
-		var nextY = this.boardY;
-		
-		var nextTileCoords = getRowAndCol(nextX, nextY);
-		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
-	
-		// keep player from going onto a tree tile
-		if (nextTile.type === 'tree') {
-			this.boardY = t.drawY + 32;
-		}
-		
-		 if (t.occupied === true) {
-	    for (var i = 0; i < entityGen.entities.length; i++) {
-		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		var ent = entityGen.entities[i];
-		  		break;
-		    }
-	    }
-	    
-			this.handleEntity(ent, t);
-			// if player didn't get killed by a monster or
-			// didn't starve, they can move on.
-			if (this.health > 0) {
-				this.boardY -= this.speed;
-			}
-			else {
-				this.alive = false;
-				this.die();
-			}
-	  }
-	  else {
+
+		if (getTileOrIndexes(this.boardX, this.boardY - 10, 'tile').type !== 'tree') {
 			this.boardY -= this.speed;
+
+			if (getTileOrIndexes(this.boardX, this.boardY - 10, 'tile').occupied) {
+				this.handleEntity(getTileOrIndexes(this.boardX, this.boardY - 10, 'tile'));
+	    }
 		}
 
 		this.animation.update(dt);
@@ -221,70 +117,46 @@ function Player() {
 	
 	this.moveDown = function(dt) {
 		this.animation = new Animate(this.walkDown, this.speed);
-		// check if player went off bottom of canvas
+
 		if (this.boardY > display.playerCanvas.height - this.h) {
-			this.boardY = display.playerCanvas.height - this.h;
+		 	this.boardY = display.playerCanvas.height - this.h;
 		}
 
-		var loc = getRowAndCol(this.boardX, this.boardY);
-		//console.log(loc);
-		var t = board.board[loc[0]][loc[1]];
-		
-		var nextX = this.boardX + this.speed;
-		var nextY = this.boardY;
-		
-		var nextTileCoords = getRowAndCol(nextX, nextY);
-		var nextTile = board.board[nextTileCoords[0]][nextTileCoords[1]]; 
-	
-		// keep player from going onto a tree tile
-		if (nextTile.type === 'tree') {
-			this.boardY = t.drawY - 32;
-		}
-		
-		if (t.occupied === true) {
-	    for (var i = 0; i < entityGen.entities.length; i++) {
-		    if (t.entNum === entityGen.entities[i].entNum) {
-		  		var ent = entityGen.entities[i];
-		  		break;
-		    }
-	    }
-	    
-	 	 this.handleEntity(ent, t);
-			// if player didn't get killed by a monster or
-			// didn't starve, they can move on.
-			if (this.health > 0) {
-				this.boardY += this.speed;
-			}
-			else {
-				this.alive = false;
-				this.die();
-			}
-		}
-		else {
+		if (getTileOrIndexes(this.boardX, this.boardY + 18, 'tile').type !== 'tree') {
 			this.boardY += this.speed;
+
+			if (getTileOrIndexes(this.boardX, this.boardY + 18, 'tile').occupied) {
+				this.handleEntity(getTileOrIndexes(this.boardX, this.boardY + 18, 'tile'));
+	    }
 		}
 
 		this.animation.update(dt);
 	}; // moveDown
 	
-	this.handleEntity = function(ent, tile) {
-		// get the correct entity by matching its
-		// entity number to the occupied tile's 
-		// entity number.
+	this.handleEntity = function(tile) {
+		// get the entity by matching its number to entity 
+		// number that's part of tile object
+		for (var i = 0; i < entityGen.entities.length; i++) {
+			 if (tile.entNum === entityGen.entities[i].entNum) {
+			  	var entity = entityGen.entities[i];
+			   	break;
+	     }
+		}
 		
-		switch(tile.entType) {
+		// send entity and tile to handler based on type
+		switch(entity.type) {
 			case 'food':
-			  this.handleFood(ent, tile);
+			  this.handleFood(entity, tile);
 				break;
 			case 'monster':
 			case 'boss':
-				this.handleMonster(ent, tile);
+				this.handleMonster(entity, tile);
 				break;
 			case 'treasure':
-				this.handleTreasure(ent, tile);
+				this.handleTreasure(entity, tile);
 				break;
 			case 'weapon':
-				this.handleWeapon(ent, tile);
+				this.handleWeapon(entity, tile);
 				break;
 		}
 	}; // handleEntity

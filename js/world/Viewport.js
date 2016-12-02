@@ -4,9 +4,10 @@ function Viewport() {
 		// centers the player and follows him 
 		
 		// get player column and row indexes
-		var loc = getRowAndCol(player.boardX, player.boardY);
-		var colIndex = loc[0];
-		var rowIndex = loc[1];
+		var indexes = getTileOrIndexes(player.boardX, player.boardY, 'indexes');
+		
+		var colIndex = indexes[0];
+		var rowIndex = indexes[1];
 		// start and end of tile rows and columns to
 		// draw in the viewport
 		var colBegin, colEnd, rowBegin, rowEnd;
@@ -20,7 +21,7 @@ function Viewport() {
 			colEnd = 6;
 		}
 		else {
-			colBegin = loc[0] - 3;
+			colBegin = colIndex - 3;
 		}
 		
 		if (colIndex >= 21) {
@@ -28,7 +29,7 @@ function Viewport() {
 			colEnd = 25;
 		}
 		else {
-			colEnd = loc[0] + 3;
+			colEnd = colIndex + 3;
 		}
 		
 		if (rowIndex <= 3) {
@@ -36,7 +37,7 @@ function Viewport() {
 			rowEnd = 6;
 		}
 		else {
-			rowBegin = loc[1] - 3;
+			rowBegin = rowIndex - 3;
 		}
 		
 		if (rowIndex >= 21) {
@@ -44,21 +45,23 @@ function Viewport() {
 			rowEnd = 25;
 		}
 		else {
-			rowEnd = loc[1] + 3;
+			rowEnd = rowIndex + 3;
 		}
 		
 		// loop through rows and columns to draw viewport 
 		for (var i = colBegin; i <= colEnd; i++) {
 			for (var j = rowBegin; j <= rowEnd; j++) {
 				//console.log('i is ' + i + ' and j is ' + j);
-				var t = board.board[i][j];
+				var tile = board.board[i][j];
 				
 				ctx.drawImage(
-					t.img,
-					t.sourceX, t.sourceY,
+					tile.img,
+					tile.sourceX,
+					tile.sourceY,
 					display.TILE_SIZE,
 					display.TILE_SIZE,
-					t.drawX, t.drawY,
+					tile.drawX,
+					tile.drawY,
 					display.TILE_SIZE,
 					display.TILE_SIZE
 				);
@@ -66,9 +69,9 @@ function Viewport() {
 				// if tile has entity on it (tile "occupied"
 				// property true), then find entity number, 
 				// draw to tile and break out of loop.
-				if (t.occupied === true) {
+				if (tile.occupied === true) {
 					for (var k = 0; k < entityGen.entities.length; k++) {
-						if (entityGen.entities[k].entNum === t.entNum) {
+						if (entityGen.entities[k].entNum === tile.entNum) {
 							var e =	entityGen.entities[k];
 							
 							ctx.drawImage(
