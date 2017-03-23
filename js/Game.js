@@ -98,7 +98,7 @@ function Game() {
     display.titleCtx.font = 'bold 16px monospace';
     display.titleCtx.fillText(introText.press, 360, 520);
     
-    self.audio.intro.play();
+    //self.audio.intro.play();
   }; // drawStart
   
   // displays between game levels as transition

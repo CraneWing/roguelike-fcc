@@ -1,0 +1,30 @@
+************* GRAPHICS *************
+
+Player sprite created at online version of Liberated Pixel Creator
+http://gaurav.munjal.us/Universal-LPC-Spritesheet-Character-Generator/#
+
+Gems and gold treasures by Clint Ballanger
+http://opengameart.org/users/clint-bellanger
+http://opengameart.org/content/gem-icons
+http://opengameart.org/content/gold-treasure-icons
+
+Gold skull by cron
+http://opengameart.org/content/gold-skull
+
+Monsters from Project Utumno Stone Soup Dungeon crawler
+https://opengameart.org/content/dungeon-crawl-32x32-tiles
+
+Trees by Materaelfay
+http://mataraelfay.deviantart.com
+
+************* AUDIO *************
+
+Theme song by Tristan Lohengrin
+https://www.freesound.org/people/Tristan_Lohengrin
+
+Between level fanfare by TaranP
+http://www.freesound.org/people/TaranP
+http://www.freesound.org/people/TaranP/sounds/361688/
+
+Pickup sounds by Kastenfrosch
+https://www.freesound.org/people/Kastenfrosch

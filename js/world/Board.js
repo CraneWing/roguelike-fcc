@@ -13,7 +13,8 @@ function Board() {
   this.rows = Math.floor(display.bgCanvas.height/display.TILE_SIZE);
   // boolean if board generation done or not
   this.boardReady = false;
-
+	
+	console.log('cols are ' + this.cols + ' and rows are ' + this.rows);
   // board initially starts as a 2D array filled
   // entirely with tree tiles.
   this.setUpBoard = function() {
